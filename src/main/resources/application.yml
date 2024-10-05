@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/plus_test?serverTimezone=Asia/Seoul
+        url: jdbc:mysql://rds-wookey.c5ycesoyi03x.ap-northeast-2.rds.amazonaws.com:3306/plus_test?serverTimezone=Asia/Seoul
         username: root
     jpa:
         hibernate:
@@ -13,6 +13,15 @@ spring:
             hibernate:
                 show_sql: true
                 format_sql: true
+                dialect: org.hibernate.dialect.MySQLDialect
 jwt:
     secret:
         key:
+
+
+cloud:
+    aws:
+        s3:
+            bucket: plus-bucket
+        stack.auto: false
+        region.static: ap-northeast-2
