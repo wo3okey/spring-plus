@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -58,5 +61,13 @@ public class UserService {
         User user = userRepository.findById(authUser.getId()).orElseThrow(() -> new InvalidRequestException("User not found"));
         String uploadImageUrl = s3Service.uploadFile(file);
         user.changeImage(uploadImageUrl);
+    }
+
+    public List<UserResponse> getUsers(String nickname) {
+        List<User> users = userRepository.findByNickname(nickname);
+
+        return users.stream()
+                .map(user -> new UserResponse(user.getId(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 }
